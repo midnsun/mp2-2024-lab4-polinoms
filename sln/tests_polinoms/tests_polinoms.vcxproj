@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\gtest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\include;D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\test;D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\gtest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -91,7 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\gtest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\include;D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\test;D:\Users\maksi\Desktop\dz_38\UNN\mp2-2024-lab4-polinoms\gtest;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,6 +133,7 @@
     <ClCompile Include="..\..\test\test_main.cpp" />
     <ClCompile Include="..\..\test\test_myList.cpp" />
     <ClCompile Include="..\..\test\test_myvector.cpp" />
+    <ClCompile Include="..\..\test\test_parser.cpp" />
     <ClCompile Include="..\..\test\test_polinom.cpp" />
     <ClCompile Include="..\..\test\test_stack.cpp" />
   </ItemGroup>

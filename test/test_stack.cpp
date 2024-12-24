@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "myStack.h"
 #include <gtest.h>
 
 myStack<int> foo() {

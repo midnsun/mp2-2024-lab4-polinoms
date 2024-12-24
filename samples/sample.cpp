@@ -92,6 +92,7 @@ void testMergeSort() {
     }
     cout << endl;
 
+    
     current = head;
     ListNode<int>* tmp;
     while (current != nullptr) {
