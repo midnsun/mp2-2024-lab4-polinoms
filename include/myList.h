@@ -1,73 +1,207 @@
 #pragma once
 #include <iostream> // 
-
-template <typename T>
-struct ListNode {
-	T val;
-	ListNode* next;
-	ListNode() {}
-	ListNode(const T& val, ListNode* next = nullptr) : val(val), next(next) {}
-};
+#include "myQueue.h"
 
 template <typename T>
 struct myList { // no new-deletes or no ascess to ptrs or smart ptrs
-	ListNode<T>* head;
-	ListNode<T>* lastUsed;
-	myList(ListNode<T>* node = nullptr) : head(node), lastUsed(node) {}
-//	myList(const myList<T>& rhs) {
-//		std::cout << "copy c-tor" << std::endl; //
-//		if (rhs.head != nullptr) {
-//			ListNode<T>* rhshead = rhs.head;
-//			head = new ListNode{ rhshead->val, rhshead->next };
-//			ListNode<T>* lhshead = head;
-//			lastUsed = rhs.lastUsed;
-//			while (rhshead != nullptr) {
-//				rhshead = rhshead->next;
-//				lhshead->next = new ListNode{ rhshead->val, rhshead->next };
-//				lhshead = lhshead->next;
-//			}
-//		}
-//	}
-//	myList(myList<T>&& rhs) {
-//		std::cout << "moved c-tor" << std::endl; // 
-//		head = rhs.head;
-//		rhs.head = nullptr;
-//		lastUsed = rhs.head;
-//	}
-//	myList<T>& operator=(const myList<T>& rhs) {
-//		ListNode<int>* tmp = nullptr;
-//		while (head != nullptr) {
-//			tmp = head;
-//			head = head->next;
-//			delete tmp;
-//		}
-//
-//		if (rhs.head != nullptr) {
-//			ListNode<T>* rhshead = rhs.head;
-//			head = new ListNode{ rhshead->val, rhshead->next };
-//			ListNode<T>* lhshead = head;
-//			lastUsed = rhs.lastUsed;
-//			while (rhshead != nullptr) {
-//				rhshead = rhshead->next;
-//				lhshead->next = ListNode{ rhshead->val, rhshead->next };
-//				lhshead = lhshead->next;
-//			}
-//		}
-//
-//		return this;
-//	}
-//	// append to last used
-//	// del last used
-//	// set/get last used
-//	// constructor (assign/moded) - destructor
-//	// SMART ptrs ??
-//	
-//	~myList(){
-//		ListNode<int>* tmp = nullptr;
-//		while (head != nullptr) {
-//			tmp = head;
-//			head = head->next;
-//			delete tmp;
-//		}
-//	}
+private:
+	struct ListNode {
+		T val;
+		ListNode* next;
+		ListNode() {}
+		ListNode(const T& val, ListNode* next = nullptr) : val(val), next(next) {}
+	};
+	ListNode* head;
+	ListNode* lastUsed;
+public:
+	myList() : head(nullptr), lastUsed(nullptr) { std::cout << "1 constructor" << std::endl; }
+
+	myList(const T& v) {
+		std::cout << "2 constructor" << std::endl;
+		head = new ListNode{ v, nullptr };
+		lastUsed = head;
+	}
+
+	myList(const myList<T>& rhs) {
+		std::cout << "copy costructor" << std::endl;
+		if (rhs.head != nullptr) {
+			ListNode* rhshead = rhs.head;
+			head = new ListNode{ rhshead->val, nullptr };
+			ListNode* lhshead = head;
+			lastUsed = head;
+			while (rhshead->next != nullptr) {
+				rhshead = rhshead->next;
+				lhshead->next = new ListNode{ rhshead->val, nullptr };
+				lhshead = lhshead->next;
+			}
+		}
+	}
+
+	myList(myList<T>&& rhs) {
+		std::cout << "moved c-tor" << std::endl; // 
+		head = rhs.head;
+		lastUsed = rhs.lastUsed;
+		rhs.head = nullptr;
+	}
+
+	myList<T>& operator=(const myList<T>& rhs) {
+		std::cout << "copy assign" << std::endl;
+		ListNode* tmp = nullptr;
+		while (head != nullptr) {
+			tmp = head;
+			head = head->next;
+			delete tmp;
+		}
+
+		if (rhs.head != nullptr) {
+			ListNode* rhshead = rhs.head;
+			head = new ListNode{ rhshead->val, nullptr };
+			ListNode* lhshead = head;
+			lastUsed = head;
+			while (rhshead->next != nullptr) {
+				rhshead = rhshead->next;
+				lhshead->next = new ListNode{ rhshead->val, nullptr };
+				lhshead = lhshead->next;
+			}
+		}
+
+		return *this;
+	}
+
+	myList<T>& operator=(myList<T>&& rhs) {
+		std::cout << "moved assign" << std::endl; // 
+		std::swap(head, rhs.head);
+		lastUsed = rhs.lastUsed;
+		return *this;
+	}
+
+	bool isEnd() {
+		return (lastUsed == nullptr);
+	}
+
+	bool isEmpty() {
+		return (head == nullptr);
+	}
+
+	void toBegin() {
+		lastUsed = head;
+	}
+
+
+	const T& value() const {
+		if (isEnd()) throw std::exception("Bad action");
+		return lastUsed->val;
+	}
+
+	T& value() {
+		if (isEnd()) throw std::exception("Bad action");
+		return lastUsed->val;
+	}
+
+	void next() {
+		if (isEnd()) throw std::exception("Bad action");
+		lastUsed = lastUsed->next;
+	}
+
+	void append(const T& v) {
+		if (isEmpty()) {
+			head = new ListNode{ v, nullptr };
+			lastUsed = head;
+		}
+		else if (isEnd()) throw std::exception("Bad action");
+		else {
+			ListNode* tmp = new ListNode{ v, lastUsed->next };
+			lastUsed->next = tmp;
+			lastUsed = tmp;
+		}
+	}
+
+	void del() {
+		if (isEnd()) throw std::exception("Bad action");
+		ListNode* tmp = head;
+		if (lastUsed == head) {
+			tmp = head;
+			head = head->next;
+			lastUsed = head;
+			delete tmp;
+		}
+		else {
+			while (tmp->next != lastUsed) tmp = tmp->next;
+			tmp->next = lastUsed->next;
+			tmp = tmp->next;
+			delete tmp;
+		}
+	}
+	
+	~myList(){
+		ListNode* tmp = nullptr;
+		while (head != nullptr) {
+			tmp = head;
+			head = head->next;
+			delete tmp;
+		}
+	}
+
+	ListNode* myMerge(ListNode* headl, ListNode* headr) {
+		ListNode* head = nullptr;
+		if (headl == nullptr) {
+			return headr;
+		}
+		if (headr == nullptr) {
+			return headl;
+		}
+
+		if (headl->val <= headr->val) {
+			head = headl;
+			headl = headl->next;
+		}
+		else {
+			head = headr;
+			headr = headr->next;
+		}
+
+		ListNode* headres = head;
+		while ((headl != nullptr) && (headr != nullptr)) {
+			if (headl->val <= headr->val) {
+				head->next = headl;
+				headl = headl->next;
+			}
+			else if (headl->val > headr->val) {
+				head->next = headr;
+				headr = headr->next;
+			}
+			head = head->next;
+		}
+		if (headl != nullptr)
+			head->next = headl;
+		if (headr != nullptr)
+			head->next = headr;
+
+		return headres;
+	}
+
+	void myMergeSort() {
+		myQueue<ListNode*> q;
+		ListNode* copiedhead = head;
+		ListNode* node;
+
+		while (head != nullptr) {
+			node = head;
+			head = head->next;
+			node->next = nullptr;
+			q.push(node);
+		}
+
+		ListNode* first = nullptr;
+		ListNode* second = nullptr;
+		if (!q.isEmpty())
+			while (true) {
+				first = q.back();
+				if (q.isEmpty()) break;
+				second = q.back();
+				q.push(myMerge(first, second));
+			}
+
+		head = first;
+	}
 };

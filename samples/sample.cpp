@@ -1,10 +1,11 @@
-#include "listMergeSort.h"
 #include "myQueue.h"
+#include "myList.h"
 #include <iostream>
 #include <random>
 
 using namespace std;
 
+/*
 void testMerge() {
     ListNode<int>* current;
     ListNode<int>* head1 = new ListNode<int>{ 1, nullptr };
@@ -101,8 +102,92 @@ void testMergeSort() {
         delete tmp;
     }
 }
+*/
+
+void testLis1t() { // get, append, copy, modify
+    myList<int> l1;
+
+    auto lambda = [](myList<int> &_l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+    lambda(l1);
+
+    srand(5);
+    for (int i = 0; i < 10; ++i) {
+        int v = rand() % 100;
+        cout << v << " ";
+        l1.append(v);
+    }
+    cout << endl;
+    l1.toBegin();
+
+    lambda(l1);
+
+    myList<int> l2 = l1;
+    cout << "modify" << " " << l1.value() << endl;
+    l2.value() = 5;
+    lambda(l1);
+    lambda(l2);
+}
+
+void testList2() { // assign copy
+    myList<int> l1;
+
+    auto lambda = [](myList<int>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+
+    srand(5);
+    for (int i = 0; i < 10; ++i) {
+        int v = rand() % 100;
+        l1.append(v);
+    }
+    l1.toBegin();
+    lambda(l1);
+
+    myList<int> l2;
+    for (int i = 0; i < 5; ++i) {
+        int v = rand() % 100;
+        l2.append(v);
+    }
+    l2.toBegin();
+    lambda(l2);
+    cout << endl;
+
+    l2 = l1;
+    lambda(l2);
+
+    cout << "modify" << endl;
+    l2.value() = 5;
+    lambda(l1);
+    lambda(l2);
+}
+
+myList<int> foo() {
+    myList<int> l;
+    for (int i = 0; i < 11; ++i) {
+        int v = rand() % 100;
+        l.append(v);
+    }
+//    l.toBegin();
+    return l;
+}
+
+void testList3() {
+    myList<int> l1;
+
+    auto lambda = [](myList<int>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+
+    srand(5);
+    for (int i = 0; i < 10; ++i) {
+        int v = rand() % 100;
+        l1.append(v);
+    }
+    l1.toBegin();
+    lambda(l1);
+
+    myList<int> l2 = foo();
+    lambda(l2);
+}
+
 
 int main() {
-    testMergeSort();
+    testList3();
 	return 0;
 }
