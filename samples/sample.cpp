@@ -159,17 +159,17 @@ void testList2() { // assign copy
     lambda(l2);
 }
 
-myList<int> foo() {
+myList<int> testfoo() {
     myList<int> l;
     for (int i = 0; i < 11; ++i) {
         int v = rand() % 100;
         l.append(v);
     }
-//    l.toBegin();
+    l.toBegin();
     return l;
 }
 
-void testList3() {
+void testList3() { // strange behaviour, i mean testfoo creates List just implace into l3
     myList<int> l1;
 
     auto lambda = [](myList<int>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
@@ -182,12 +182,32 @@ void testList3() {
     l1.toBegin();
     lambda(l1);
 
-    myList<int> l2 = foo();
+    myList<int> l2;
+    l2 = testfoo();
     lambda(l2);
+
+    myList<int> l3(testfoo());
+    lambda(l3);
 }
 
+void testMerge() {
+    myList<int> l1;
+
+    auto lambda = [](myList<int>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+
+    srand(7);
+    for (int i = 0; i < 10; ++i) {
+        int v = rand() % 100;
+        l1.append(v);
+    }
+    l1.toBegin();
+    lambda(l1);
+
+    l1.mergeSort();
+    lambda(l1);
+}
 
 int main() {
-    testList3();
+    testMerge();
 	return 0;
 }

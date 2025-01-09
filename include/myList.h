@@ -40,7 +40,7 @@ public:
 	myList(myList<T>&& rhs) {
 		std::cout << "moved c-tor" << std::endl; // 
 		head = rhs.head;
-		lastUsed = rhs.lastUsed;
+		lastUsed = head;
 		rhs.head = nullptr;
 	}
 
@@ -71,7 +71,7 @@ public:
 	myList<T>& operator=(myList<T>&& rhs) {
 		std::cout << "moved assign" << std::endl; // 
 		std::swap(head, rhs.head);
-		lastUsed = rhs.lastUsed;
+		lastUsed = head;
 		return *this;
 	}
 
@@ -142,7 +142,7 @@ public:
 		}
 	}
 
-	ListNode* myMerge(ListNode* headl, ListNode* headr) {
+	ListNode* merge(ListNode* headl, ListNode* headr) {
 		ListNode* head = nullptr;
 		if (headl == nullptr) {
 			return headr;
@@ -180,9 +180,8 @@ public:
 		return headres;
 	}
 
-	void myMergeSort() {
+	void mergeSort() {
 		myQueue<ListNode*> q;
-		ListNode* copiedhead = head;
 		ListNode* node;
 
 		while (head != nullptr) {
@@ -199,9 +198,10 @@ public:
 				first = q.back();
 				if (q.isEmpty()) break;
 				second = q.back();
-				q.push(myMerge(first, second));
+				q.push(merge(first, second));
 			}
 
 		head = first;
+		lastUsed = head;
 	}
 };
