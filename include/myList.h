@@ -2,7 +2,7 @@
 #include <iostream> // 
 #include "myQueue.h"
 
-template <typename T>
+template <typename T, typename F>
 struct myList { // no new-deletes or no ascess to ptrs or smart ptrs
 private:
 	struct ListNode {
@@ -23,7 +23,7 @@ public:
 	}
 
 	myList(const myList<T>& rhs) {
-		std::cout << "copy costructor" << std::endl;
+//		std::cout << "copy costructor" << std::endl;
 		if (rhs.head != nullptr) {
 			ListNode* rhshead = rhs.head;
 			head = new ListNode{ rhshead->val, nullptr };
@@ -38,14 +38,14 @@ public:
 	}
 
 	myList(myList<T>&& rhs) {
-		std::cout << "moved c-tor" << std::endl; // 
+//		std::cout << "moved c-tor" << std::endl; // 
 		head = rhs.head;
 		lastUsed = head;
 		rhs.head = nullptr;
 	}
 
 	myList<T>& operator=(const myList<T>& rhs) {
-		std::cout << "copy assign" << std::endl;
+//		std::cout << "copy assign" << std::endl;
 		ListNode* tmp = nullptr;
 		while (head != nullptr) {
 			tmp = head;
@@ -69,21 +69,21 @@ public:
 	}
 
 	myList<T>& operator=(myList<T>&& rhs) {
-		std::cout << "moved assign" << std::endl; // 
+//		std::cout << "moved assign" << std::endl; // 
 		std::swap(head, rhs.head);
 		lastUsed = head;
 		return *this;
 	}
 
-	bool isEnd() {
+	bool isEnd() const {
 		return (lastUsed == nullptr);
 	}
 
-	bool isEmpty() {
+	bool isEmpty() const {
 		return (head == nullptr);
 	}
 
-	void toBegin() {
+	void toBegin() const {
 		lastUsed = head;
 	}
 
@@ -98,7 +98,7 @@ public:
 		return lastUsed->val;
 	}
 
-	void next() {
+	void next() const {
 		if (isEnd()) throw std::exception("Bad action");
 		lastUsed = lastUsed->next;
 	}
@@ -142,6 +142,8 @@ public:
 		}
 	}
 
+private:
+
 	ListNode* merge(ListNode* headl, ListNode* headr) {
 		ListNode* head = nullptr;
 		if (headl == nullptr) {
@@ -151,7 +153,8 @@ public:
 			return headl;
 		}
 
-		if (headl->val <= headr->val) {
+//		if (headl->val <= headr->val) {
+		if (F(headl->val, headr->val)) {
 			head = headl;
 			headl = headl->next;
 		}
@@ -162,11 +165,12 @@ public:
 
 		ListNode* headres = head;
 		while ((headl != nullptr) && (headr != nullptr)) {
-			if (headl->val <= headr->val) {
+//			if (headl->val <= headr->val) {
+			if (F(headl->val, headr->val)) {
 				head->next = headl;
 				headl = headl->next;
 			}
-			else if (headl->val > headr->val) {
+			else {
 				head->next = headr;
 				headr = headr->next;
 			}
@@ -179,6 +183,8 @@ public:
 
 		return headres;
 	}
+
+public:
 
 	void mergeSort() {
 		myQueue<ListNode*> q;

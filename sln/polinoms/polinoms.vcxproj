@@ -129,7 +129,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\listMergeSort.h" />
     <ClInclude Include="..\..\include\myList.h" />
     <ClInclude Include="..\..\include\myQueue.h" />
     <ClInclude Include="..\..\include\myVector.h" />

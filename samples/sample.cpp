@@ -104,10 +104,14 @@ void testMergeSort() {
 }
 */
 
-void testLis1t() { // get, append, copy, modify
-    myList<int> l1;
+struct cmp {
+    bool operator()(int a, int b) { return a < b; }
+};
 
-    auto lambda = [](myList<int> &_l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+void testLis1t() { // get, append, copy, modify
+    myList<int, cmp> l1;
+
+    auto lambda = [](myList<int, cmp> &_l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
     lambda(l1);
 
     srand(5);
@@ -121,7 +125,7 @@ void testLis1t() { // get, append, copy, modify
 
     lambda(l1);
 
-    myList<int> l2 = l1;
+    myList<int, cmp> l2 = l1;
     cout << "modify" << " " << l1.value() << endl;
     l2.value() = 5;
     lambda(l1);
@@ -129,9 +133,9 @@ void testLis1t() { // get, append, copy, modify
 }
 
 void testList2() { // assign copy
-    myList<int> l1;
+    myList<int, cmp> l1;
 
-    auto lambda = [](myList<int>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+    auto lambda = [](myList<int, cmp>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
 
     srand(5);
     for (int i = 0; i < 10; ++i) {
@@ -141,7 +145,7 @@ void testList2() { // assign copy
     l1.toBegin();
     lambda(l1);
 
-    myList<int> l2;
+    myList<int, cmp> l2;
     for (int i = 0; i < 5; ++i) {
         int v = rand() % 100;
         l2.append(v);
@@ -159,8 +163,8 @@ void testList2() { // assign copy
     lambda(l2);
 }
 
-myList<int> testfoo() {
-    myList<int> l;
+myList<int, cmp> testfoo() {
+    myList<int, cmp> l;
     for (int i = 0; i < 11; ++i) {
         int v = rand() % 100;
         l.append(v);
@@ -170,9 +174,9 @@ myList<int> testfoo() {
 }
 
 void testList3() { // strange behaviour, i mean testfoo creates List just implace into l3
-    myList<int> l1;
+    myList<int, cmp> l1;
 
-    auto lambda = [](myList<int>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+    auto lambda = [](myList<int, cmp>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
 
     srand(5);
     for (int i = 0; i < 10; ++i) {
@@ -182,18 +186,18 @@ void testList3() { // strange behaviour, i mean testfoo creates List just implac
     l1.toBegin();
     lambda(l1);
 
-    myList<int> l2;
+    myList<int, cmp> l2;
     l2 = testfoo();
     lambda(l2);
 
-    myList<int> l3(testfoo());
+    myList<int, cmp> l3(testfoo());
     lambda(l3);
 }
 
 void testMerge() {
-    myList<int> l1;
+    myList<int, cmp> l1;
 
-    auto lambda = [](myList<int>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
+    auto lambda = [](myList<int, cmp>& _l) { while (!_l.isEnd()) { std::cout << _l.value() << " "; _l.next(); } std::cout << std::endl; _l.toBegin(); };
 
     srand(7);
     for (int i = 0; i < 10; ++i) {
@@ -208,6 +212,6 @@ void testMerge() {
 }
 
 int main() {
-    testMerge();
+    
 	return 0;
 }
