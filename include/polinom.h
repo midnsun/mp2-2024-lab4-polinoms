@@ -1,5 +1,5 @@
 #pragma once
-#define MAX_POWER 9
+#define MAX_POWER 10
 #include "myList.h"
 #include <iostream>
 
@@ -14,6 +14,7 @@ class polinom {
 	const int maxPower;
 public:
 	polinom();
+	polinom(const myList<std::pair<int, double>, cmpMonom<double>>& l);
 	polinom(const polinom& p);
 	polinom(polinom&& p);
 	polinom& operator=(const polinom& p);
@@ -25,7 +26,7 @@ public:
 	const double& calculate(const double& v);
 
 	friend std::ostream& operator<< (std::ostream& s, const polinom& p);
-	friend std::istream& operator>> (std::istream& s, const polinom& p);
+	friend std::istream& operator>> (std::istream& s, polinom& p);
 
 };
 

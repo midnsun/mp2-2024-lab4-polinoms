@@ -14,15 +14,15 @@ private:
 	ListNode* head;
 	ListNode* lastUsed;
 public:
-	myList() : head(nullptr), lastUsed(nullptr) { std::cout << "1 constructor" << std::endl; }
+	myList() : head(nullptr), lastUsed(nullptr) {/* std::cout << "1 constructor" << std::endl; */}
 
 	myList(const T& v) {
-		std::cout << "2 constructor" << std::endl;
+//		std::cout << "2 constructor" << std::endl;
 		head = new ListNode{ v, nullptr };
 		lastUsed = head;
 	}
 
-	myList(const myList<T>& rhs) {
+	myList(const myList<T, F>& rhs)  :head(nullptr), lastUsed(nullptr) {
 //		std::cout << "copy costructor" << std::endl;
 		if (rhs.head != nullptr) {
 			ListNode* rhshead = rhs.head;
@@ -36,16 +36,17 @@ public:
 			}
 		}
 	}
-
-	myList(myList<T>&& rhs) {
+	
+	myList(myList<T, F>&& rhs) {
 //		std::cout << "moved c-tor" << std::endl; // 
 		head = rhs.head;
 		lastUsed = head;
 		rhs.head = nullptr;
 	}
-
-	myList<T>& operator=(const myList<T>& rhs) {
+	
+	myList<T, F>& operator=(const myList<T, F>& rhs) {
 //		std::cout << "copy assign" << std::endl;
+		if (this == &rhs) return *this;
 		ListNode* tmp = nullptr;
 		while (head != nullptr) {
 			tmp = head;
@@ -67,8 +68,8 @@ public:
 
 		return *this;
 	}
-
-	myList<T>& operator=(myList<T>&& rhs) {
+	
+	myList<T, F>& operator=(myList<T, F>&& rhs) {
 //		std::cout << "moved assign" << std::endl; // 
 		std::swap(head, rhs.head);
 		lastUsed = head;
@@ -83,7 +84,7 @@ public:
 		return (head == nullptr);
 	}
 
-	void toBegin() const {
+	void toBegin() {
 		lastUsed = head;
 	}
 
@@ -98,7 +99,7 @@ public:
 		return lastUsed->val;
 	}
 
-	void next() const {
+	void next() {
 		if (isEnd()) throw std::exception("Bad action");
 		lastUsed = lastUsed->next;
 	}
@@ -145,6 +146,7 @@ public:
 private:
 
 	ListNode* merge(ListNode* headl, ListNode* headr) {
+		F comparator;
 		ListNode* head = nullptr;
 		if (headl == nullptr) {
 			return headr;
@@ -154,7 +156,7 @@ private:
 		}
 
 //		if (headl->val <= headr->val) {
-		if (F(headl->val, headr->val)) {
+		if (comparator(headl->val, headr->val)) {
 			head = headl;
 			headl = headl->next;
 		}
@@ -166,7 +168,7 @@ private:
 		ListNode* headres = head;
 		while ((headl != nullptr) && (headr != nullptr)) {
 //			if (headl->val <= headr->val) {
-			if (F(headl->val, headr->val)) {
+			if (comparator(headl->val, headr->val)) {
 				head->next = headl;
 				headl = headl->next;
 			}

@@ -2,6 +2,7 @@
 #include "myList.h"
 #include <iostream>
 #include <random>
+#include "polinom.h"
 
 using namespace std;
 
@@ -211,7 +212,24 @@ void testMerge() {
     lambda(l1);
 }
 
+void testpolinoms() {
+    polinom p1;
+    polinom p2;
+
+    cout << "input required\n";
+//    try
+//    {
+        cin >> p1 >> p2;
+        cout << endl << p1 << endl << p2 << endl;
+//    }
+//    catch (const std::exception& e)
+//    {
+//        cout << e.what() << endl;
+//    }
+        cout << p1 + p2 << endl;
+}
+
 int main() {
-    
+    testpolinoms();
 	return 0;
 }
