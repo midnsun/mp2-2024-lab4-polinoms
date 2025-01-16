@@ -10,6 +10,18 @@ polinom::polinom(const polinom& p) : maxPower(MAX_POWER), data(p.data) {}
 
 polinom::polinom(polinom&& p) : maxPower(MAX_POWER), data(p.data) {}
 
+int polinom::getDegX() {
+	return data.value().first / (maxPower * maxPower);
+}
+
+int polinom::getDegY() {
+	return (data.value().first % (maxPower * maxPower)) / maxPower;
+}
+
+int polinom::getDegZ() {
+	return data.value().first % maxPower;
+}
+
 polinom& polinom::operator=(const polinom& p) {
 	data = p.data;
 	return *this;
@@ -20,7 +32,7 @@ polinom& polinom::operator=(polinom&& p) {
 	return *this;
 }
 
-polinom& polinom::operator+(const polinom& p) {
+polinom polinom::operator+(const polinom& p) {
 	myList<std::pair<int, double>, cmpMonom<double>> l = p.data;
 	l.toBegin();
 	while (!l.isEnd()) {
@@ -58,9 +70,8 @@ polinom& polinom::operator+(const polinom& p) {
 	}
 	newData.toBegin();
 
-
-	data = newData;
-	return *this;
+	polinom res(newData);
+	return res;
 }
 
 std::ostream& operator<<(std::ostream& s, const polinom& p) {
@@ -207,7 +218,75 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 
 	p = polinom(l);
 	p = p + polinom();
-//	p = polinom() + p;
 
 	return s;
+}
+
+polinom polinom::operator*(const double& v) {
+	polinom res = *this;
+	res.data.toBegin();
+
+	while (!data.isEnd()) {
+		res.data.value().second *= v;
+		res.data.next();
+	}
+
+	res.data.toBegin();
+	return res;
+}
+
+polinom operator* (const double& v, const polinom& p) {
+	polinom res = p;
+	res.data.toBegin();
+
+	while (!res.data.isEnd()) {
+		res.data.value().second *= v;
+		res.data.next();
+	}
+
+	res.data.toBegin();
+	return res;
+}
+
+polinom polinom::operator*(const polinom& p) {
+	polinom res;
+	polinom mutableP = p;
+	polinom tmp;
+	std::pair<int, double> monom;
+	mutableP.data.toBegin();
+	
+	while (!mutableP.data.isEnd()) {
+		tmp = *this;
+
+		tmp.data.toBegin();
+		while (!tmp.data.isEnd()) {
+			tmp.data.value().second = tmp.data.value().second * mutableP.data.value().second;
+			if (tmp.getDegX() + mutableP.getDegX() >= 10) throw std::exception("Degree over X is too big");
+			if (tmp.getDegY() + mutableP.getDegY() >= 10) throw std::exception("Degree over Y is too big");
+			if (tmp.getDegZ() + mutableP.getDegZ() >= 10) throw std::exception("Degree over Z is too big");
+			tmp.data.value().first = tmp.data.value().first + mutableP.data.value().first;
+			tmp.data.next();
+		}
+
+		res = res + tmp;
+		mutableP.data.next();
+	}
+
+	return res;
+}
+
+double polinom::calculate(const double& x, const double& y, const double& z) {
+	double res = 0.0;
+	data.toBegin();
+
+	while (!data.isEnd()) {
+		res += data.value().second
+			* pow(x, getDegX())
+			* pow(y, getDegY())
+			* pow(z, getDegZ());
+		data.next();
+	}
+	data.toBegin();
+
+	return res;
 }
