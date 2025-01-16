@@ -12,9 +12,9 @@ struct cmpMonom
 class polinom {
 	myList<std::pair<int, double>, cmpMonom<double>> data;
 	const int maxPower;
-	int getDegX();
-	int getDegY();
-	int getDegZ();
+	int getDegX() const;
+	int getDegY() const;
+	int getDegZ() const;
 public:
 	polinom();
 	polinom(const myList<std::pair<int, double>, cmpMonom<double>>& l);
@@ -23,11 +23,11 @@ public:
 	polinom& operator=(const polinom& p);
 	polinom& operator=(polinom&& p);
 
-	polinom operator+ (const polinom& p);
-	polinom operator* (const double& v);
+	polinom operator+ (const polinom& p) const;
+	polinom operator* (const double& v) const;
 	friend polinom operator* (const double& v, const polinom& p);
-	polinom operator* (const polinom& p);
-	double calculate(const double& x, const double& y, const double& z);
+	polinom operator* (const polinom& p) const;
+	double calculate(const double& x, const double& y, const double& z) const;
 
 	friend std::ostream& operator<< (std::ostream& s, const polinom& p);
 	friend std::istream& operator>> (std::istream& s, polinom& p);

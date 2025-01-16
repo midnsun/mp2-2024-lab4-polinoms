@@ -239,11 +239,12 @@ void testpolinoms() {
 
 int main() {
     
-    try {
+//    try {
         char c = ' ';
         polinom p;
         cout << "Enter the polinom: " << endl;
         cin >> p;
+        cout << endl << p << endl; // DEBUG
         while (c != '0') {
             do {
                 cout << endl << "Enter the action: 1 - add; 2 - multiply by number; 3 - multiply by other polinom; 4 - calculate; 0 - quit; other - retry" << endl;
@@ -255,6 +256,7 @@ int main() {
             {
                 cout << endl << "Enter ohter polinom: " << endl;
                 polinom m;
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 cin >> m;
                 cout << endl << "The result is: " << p + m << endl;
                 break;
@@ -271,6 +273,7 @@ int main() {
             {
                 cout << endl << "Enter ohter polinom: " << endl;
                 polinom m;
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 cin >> m;
                 cout << endl << "The result is: " << p * m << endl;
                 break;
@@ -289,10 +292,10 @@ int main() {
                 break;
             }
         }
-    }
+/* }
     catch (std::exception& e) {
-//        cout << e.what() << endl;
+        cout << e.what() << endl;
     }
-
+*/
 	return 0;
 }

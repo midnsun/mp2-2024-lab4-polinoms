@@ -12,7 +12,7 @@ private:
 		ListNode(const T& val, ListNode* next = nullptr) : val(val), next(next) {}
 	};
 	ListNode* head;
-	ListNode* lastUsed;
+	mutable ListNode* lastUsed;
 public:
 	myList() : head(nullptr), lastUsed(nullptr) {/* std::cout << "1 constructor" << std::endl; */}
 
@@ -84,7 +84,7 @@ public:
 		return (head == nullptr);
 	}
 
-	void toBegin() {
+	void toBegin() const {
 		lastUsed = head;
 	}
 
@@ -99,7 +99,7 @@ public:
 		return lastUsed->val;
 	}
 
-	void next() {
+	void next() const {
 		if (isEnd()) throw std::exception("Bad action");
 		lastUsed = lastUsed->next;
 	}
