@@ -8,14 +8,14 @@ private:
 public:
     using myVector<T>::size;
     myStack() : myVector<T>() {} 
-    myStack(const myStack& st) : myVector(*dynamic_cast<const myVector*>(&st)) {}
-    myStack(myStack&& st) : myVector(*dynamic_cast<myVector*>(&st)) {}
+    myStack(const myStack& st) : myVector<T>(*dynamic_cast<const myVector<T>*>(&st)) {}
+    myStack(myStack&& st) : myVector<T>(*dynamic_cast<myVector<T>*>(&st)) {}
     myStack& operator=(const myStack& st) {
-        this->myVector<T>::operator=(*dynamic_cast<const myVector*>(&st));
+        this->myVector<T>::operator=(*dynamic_cast<const myVector<T>*>(&st));
         return *this;
     }
     myStack& operator=(myStack&& st) {
-        this->myVector<T>::operator=(*dynamic_cast<myVector*>(&st));
+        this->myVector<T>::operator=(*dynamic_cast<myVector<T>*>(&st));
         return *this;
     }
     bool isEmpty() const { return sizevar == 0; }

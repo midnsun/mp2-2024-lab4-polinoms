@@ -14,16 +14,15 @@ private:
 	ListNode* head;
 	mutable ListNode* lastUsed;
 public:
-	myList() : head(nullptr), lastUsed(nullptr) {/* std::cout << "1 constructor" << std::endl; */}
+	myList() : head(nullptr), lastUsed(nullptr) { }
 
 	myList(const T& v) {
-//		std::cout << "2 constructor" << std::endl;
 		head = new ListNode{ v, nullptr };
 		lastUsed = head;
 	}
 
-	myList(const myList<T, F>& rhs)  :head(nullptr), lastUsed(nullptr) {
-//		std::cout << "copy costructor" << std::endl;
+	myList(const myList<T, F>& rhs) : head(nullptr), lastUsed(nullptr) {
+//		std::cout << "copy costructor" << std::endl; //
 		if (rhs.head != nullptr) {
 			ListNode* rhshead = rhs.head;
 			head = new ListNode{ rhshead->val, nullptr };
@@ -45,7 +44,7 @@ public:
 	}
 	
 	myList<T, F>& operator=(const myList<T, F>& rhs) {
-//		std::cout << "copy assign" << std::endl;
+//		std::cout << "copy assign" << std::endl; //
 		if (this == &rhs) return *this;
 		ListNode* tmp = nullptr;
 		while (head != nullptr) {
@@ -104,7 +103,12 @@ public:
 		lastUsed = lastUsed->next;
 	}
 
-	void append(const T& v) {
+	void appendToHead(const T& v) {
+		head = new ListNode{ v, head };
+		lastUsed = head;
+	}
+
+	void append(const T& v) { //create additional method to append to the first element (mb .append to another list?)
 		if (isEmpty()) {
 			head = new ListNode{ v, nullptr };
 			lastUsed = head;
@@ -129,8 +133,8 @@ public:
 		else {
 			while (tmp->next != lastUsed) tmp = tmp->next;
 			tmp->next = lastUsed->next;
-			tmp = tmp->next;
-			delete tmp;
+			delete lastUsed;
+			lastUsed = tmp->next;
 		}
 	}
 	

@@ -129,13 +129,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\test\test_listMergeSort.cpp" />
     <ClCompile Include="..\..\test\test_main.cpp" />
     <ClCompile Include="..\..\test\test_myList.cpp" />
     <ClCompile Include="..\..\test\test_myvector.cpp" />
     <ClCompile Include="..\..\test\test_parser.cpp" />
     <ClCompile Include="..\..\test\test_polinom.cpp" />
     <ClCompile Include="..\..\test\test_stack.cpp" />
+    <ClCompile Include="test_queue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gtest\gtest.vcxproj">

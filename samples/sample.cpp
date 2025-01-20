@@ -242,6 +242,7 @@ int main() {
 //    try {
         char c = ' ';
         polinom p;
+        cout << "Format for polinoms is: [-]<number> * x<degx> y<degy> z<degz> <+/-> <number> etc. " << endl;
         cout << "Enter the polinom: " << endl;
         cin >> p;
         cout << endl << p << endl; // DEBUG

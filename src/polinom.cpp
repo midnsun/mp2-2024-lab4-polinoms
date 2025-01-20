@@ -4,7 +4,7 @@
 
 polinom::polinom() : maxPower(MAX_POWER), data() {}
 
-polinom::polinom(const myList<std::pair<int, double>, cmpMonom<double>>& l) : maxPower(MAX_POWER), data(l) {}
+polinom::polinom(const myList<std::pair<int, double>, cmpMonom<double>>& l) : maxPower(MAX_POWER), data(l) { data.mergeSort(); }
 
 polinom::polinom(const polinom& p) : maxPower(MAX_POWER), data(p.data) {}
 
@@ -65,7 +65,7 @@ polinom polinom::operator+(const polinom& p) const {
 
 	while (!newData.isEnd()) {
 		if (abs(newData.value().second) < eps) newData.del();
-		newData.next();
+		else newData.next();
 
 	}
 	newData.toBegin();
@@ -98,9 +98,10 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 	std::pair<int, double> monom;
 	monom.first = 0;
 	monom.second = 0.0;
+	s >> std::ws;
 	std::getline(s, str);
-	auto it = str.begin();
 
+	auto it = str.begin();
 	while (it != str.end() && *it != ' ') {
 		tmp += *it;
 		++it;
