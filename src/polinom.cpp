@@ -4,7 +4,37 @@
 
 polinom::polinom() : maxPower(MAX_POWER), data() {}
 
-polinom::polinom(const myList<std::pair<int, double>, cmpMonom<double>>& l) : maxPower(MAX_POWER), data(l) { data.mergeSort(); }
+polinom::polinom(const myList<std::pair<int, double>, cmpMonom<double>>& l) : maxPower(MAX_POWER), data(l) { 
+	data.mergeSort();
+	if (data.isEmpty()) return;
+	myList<std::pair<int, double>, cmpMonom<double>> newData(data.value());
+	double maxValue, eps;
+	maxValue = abs(data.value().second);
+	data.next();
+
+	while (!data.isEnd()) {
+		if (newData.value().first == data.value().first) {
+			newData.value().second += data.value().second;
+		}
+		else {
+			newData.append(data.value());
+		}
+		maxValue = abs(data.value().second) > maxValue ? abs(data.value().second) : maxValue;
+		data.next();
+	}
+	data.toBegin();
+	newData.toBegin();
+	eps = maxValue * 1.0e-15;
+
+	while (!newData.isEnd()) {
+		if (abs(newData.value().second) < eps) newData.del();
+		else newData.next();
+
+	}
+	newData.toBegin();
+
+	data = newData;
+}
 
 polinom::polinom(const polinom& p) : maxPower(MAX_POWER), data(p.data) {}
 
@@ -100,14 +130,20 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 	monom.second = 0.0;
 	s >> std::ws;
 	std::getline(s, str);
+	double sign = 1.0;
 
 	auto it = str.begin();
+	if (*it == '-') {
+		sign = -1.0;
+		++it;
+	}
+	if (*it == ' ') ++it;
 	while (it != str.end() && *it != ' ') {
 		tmp += *it;
 		++it;
 	}
 	try {
-		monom.second = parser(tmp);
+		monom.second = sign * parser(tmp);
 	}
 	catch (std::exception&) {
 		throw std::exception("bad input");
@@ -153,7 +189,6 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 	if (it != str.end() && *it == ' ') ++it;
 	l.append(monom);
 
-	double sign;
 	while (it != str.end()) {
 		monom.first = 0;
 		monom.second = 0.0;
