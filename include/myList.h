@@ -1,9 +1,8 @@
 #pragma once
-#include <iostream> // 
 #include "myQueue.h"
 
 template <typename T, typename F>
-struct myList { // no new-deletes or no ascess to ptrs or smart ptrs
+struct myList {
 private:
 	struct ListNode {
 		T val;
@@ -22,7 +21,6 @@ public:
 	}
 
 	myList(const myList<T, F>& rhs) : head(nullptr), lastUsed(nullptr) {
-//		std::cout << "copy costructor" << std::endl; //
 		if (rhs.head != nullptr) {
 			ListNode* rhshead = rhs.head;
 			head = new ListNode{ rhshead->val, nullptr };
@@ -37,14 +35,12 @@ public:
 	}
 	
 	myList(myList<T, F>&& rhs) {
-//		std::cout << "moved c-tor" << std::endl; // 
 		head = rhs.head;
 		lastUsed = head;
 		rhs.head = nullptr;
 	}
 	
 	myList<T, F>& operator=(const myList<T, F>& rhs) {
-//		std::cout << "copy assign" << std::endl; //
 		if (this == &rhs) return *this;
 		ListNode* tmp = nullptr;
 		while (head != nullptr) {
@@ -69,7 +65,6 @@ public:
 	}
 	
 	myList<T, F>& operator=(myList<T, F>&& rhs) {
-//		std::cout << "moved assign" << std::endl; // 
 		std::swap(head, rhs.head);
 		lastUsed = head;
 		return *this;
@@ -108,7 +103,7 @@ public:
 		lastUsed = head;
 	}
 
-	void append(const T& v) { //create additional method to append to the first element (mb .append to another list?)
+	void append(const T& v) {
 		if (isEmpty()) {
 			head = new ListNode{ v, nullptr };
 			lastUsed = head;
@@ -159,7 +154,6 @@ private:
 			return headl;
 		}
 
-//		if (headl->val <= headr->val) {
 		if (comparator(headl->val, headr->val)) {
 			head = headl;
 			headl = headl->next;
@@ -171,7 +165,6 @@ private:
 
 		ListNode* headres = head;
 		while ((headl != nullptr) && (headr != nullptr)) {
-//			if (headl->val <= headr->val) {
 			if (comparator(headl->val, headr->val)) {
 				head->next = headl;
 				headl = headl->next;
