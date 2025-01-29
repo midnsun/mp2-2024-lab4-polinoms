@@ -162,7 +162,7 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 		tmp += *it;
 		++it;
 	}
-	monom.first += std::stoi(tmp) * p.maxPower * p.maxPower;
+	monom.first += parser(tmp) * p.maxPower * p.maxPower;
 	tmp = "";
 	if (it != str.end() && *it == ' ') ++it;
 	else throw std::exception("bad input");
@@ -173,7 +173,7 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 		tmp += *it;
 		++it;
 	}
-	monom.first += std::stoi(tmp) * p.maxPower;
+	monom.first += parser(tmp) * p.maxPower;
 	tmp = "";
 	if (it != str.end() && *it == ' ') ++it;
 	else throw std::exception("bad input");
@@ -184,7 +184,7 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 		tmp += *it;
 		++it;
 	}
-	monom.first += std::stoi(tmp);
+	monom.first += parser(tmp);
 	tmp = "";
 	if (it != str.end() && *it == ' ') ++it;
 	l.append(monom);
@@ -229,7 +229,7 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 			tmp += *it;
 			++it;
 		}
-		monom.first += std::stoi(tmp) * p.maxPower * p.maxPower;
+		monom.first += parser(tmp) * p.maxPower * p.maxPower;
 		tmp = "";
 		if (it != str.end() && *it == ' ') ++it;
 		else throw std::exception("bad input");
@@ -240,7 +240,7 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 			tmp += *it;
 			++it;
 		}
-		monom.first += std::stoi(tmp) * p.maxPower;
+		monom.first += parser(tmp) * p.maxPower;
 		tmp = "";
 		if (it != str.end() && *it == ' ') ++it;
 		else throw std::exception("bad input");
@@ -251,7 +251,7 @@ std::istream& operator>>(std::istream& s, polinom& p) { // format is: +- <number
 			tmp += *it;
 			++it;
 		}
-		monom.first += std::stoi(tmp);
+		monom.first += parser(tmp);
 		tmp = "";
 		l.append(monom);
 		if (it != str.end() && *it == ' ') ++it;
