@@ -63,16 +63,32 @@ polinom& polinom::operator=(polinom&& p) {
 }
 
 polinom polinom::operator+(const polinom& p) const {
+	polinom res;
+	cmpMonom<double> cmp;
 	p.data.toBegin();
-	polinom res = *this;
+	data.toBegin();
+	while (!p.data.isEnd() && !data.isEnd()) {
+		if (cmp(p.data.value(), data.value())) {
+			res.data.append(p.data.value());
+			p.data.next();
+		}
+		else {
+			res.data.append(data.value());
+			data.next();
+		}
+	}
 	while (!p.data.isEnd()) {
 		res.data.append(p.data.value());
 		p.data.next();
 	}
+	while (!data.isEnd()) {
+		res.data.append(data.value());
+		data.next();
+	}
 	res.data.toBegin();
 	p.data.toBegin();
+	data.toBegin();
 
-	res.data.mergeSort();
 	if (res.data.isEmpty()) return *this;
 	myList<std::pair<int, double>, cmpMonom<double>> newData(res.data.value());
 	double maxValue, eps;
