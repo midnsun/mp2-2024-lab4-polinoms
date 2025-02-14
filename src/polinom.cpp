@@ -38,7 +38,7 @@ polinom::polinom(const myList<std::pair<int, double>, cmpMonom<double>>& l) : ma
 
 polinom::polinom(const polinom& p) : maxPower(MAX_POWER), data(p.data) {}
 
-polinom::polinom(polinom&& p) : maxPower(MAX_POWER), data(p.data) {}
+polinom::polinom(polinom&& p) : maxPower(MAX_POWER) { data = std::move(p.data); }
 
 int polinom::getDegX() const {
 	return data.value().first / (maxPower * maxPower);
@@ -58,7 +58,7 @@ polinom& polinom::operator=(const polinom& p) {
 }
 
 polinom& polinom::operator=(polinom&& p) {
-	data = p.data;
+	data = std::move(p.data);
 	return *this;
 }
 
